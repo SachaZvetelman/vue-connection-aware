@@ -12,12 +12,19 @@ export default {
     
         if(downlink < minimumConnectionSpeed)
         {
-            el.style.display = 'none';
+            // TODO: find a way to prevent the node rendering.
         }
-    }
+    },
+    inserted (el, binding, vnode) {
+        console.log('inserted');
+    },
+    update (el, binding, vnode) {
+        console.log('update');
+    },
+    componentUpdated (el, binding, vnode) {
+        console.log('componentUpdated');
+    },
+    unbind (el, binding, vnode) {
+        console.log('unbind');
+    },
 }
-
-// const defaults = {
-//     mediumSpeed: 1,
-//     fastSpeed: 3
-// } 

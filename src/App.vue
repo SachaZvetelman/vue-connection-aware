@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" v-connection-aware="{ minimumConnectionSpeed: 2 }">
+    <connection-aware v-bind:minimumSpeed="11">
+      <img alt="Vue logo" src="./assets/logo.png">
+    </connection-aware>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import ConnectionAware from './components/ConnectionAware.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    ConnectionAware
   }
 }
 </script>
