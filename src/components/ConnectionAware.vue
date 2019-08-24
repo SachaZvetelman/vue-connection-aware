@@ -1,7 +1,8 @@
 <template>
   <div v-if="shouldRender">
     <slot></slot>
-  </div>
+    {{ minEffectiveType }}
+  </div>   
 </template>
 
 <script>
