@@ -1,31 +1,45 @@
 <template>
-  <div v-if="isConnectionFast">
+  <div v-if="shouldRender">
     <slot></slot>
   </div>
 </template>
 
 <script>
+const effectiveTypes = ['slow-2g', '2g', '3g', '4g'];
+
 export default {
   name: 'ConnectionAware',
-  props: ['minimumSpeed'],
+  props: {
+    minEffectiveType: {
+      type: String,
+      validator: function (value) {
+        return effectiveTypes.indexOf(value) !== -1;
+      }
+    },
+    maxEffectiveType: {
+      type: String,
+      validator: function (value) {
+        return effectiveTypes.indexOf(value) !== -1;
+      }
+    } 
+  },
   computed: {
-    isConnectionFast: function () {
+    shouldRender: function () {
       if(!navigator) {
         return true;
       }
       
-      // eslint-disable-next-line no-unused-vars
-      const { downlink, rrt, effectiveType } = navigator.connection;
-  
-      if(downlink < this.minimumSpeed){
-        return false;
+      const { effectiveType } = navigator.connection;
+      const effectiveTypeIndex = effectiveTypes.indexOf(effectiveType);
+      const minEffectiveTypeIndex =  effectiveTypes.indexOf(this.minEffectiveType);
+      const maxEffectiveTypeIndex =  effectiveTypes.indexOf(this.maxEffectiveType);
+
+      if(effectiveTypeIndex >= minEffectiveTypeIndex || effectiveTypeIndex <= maxEffectiveTypeIndex) {
+        return true;
       }
 
-      return true;
+      return false;
     }
   }
 }
 </script>
-
-<style scoped>
-</style>
