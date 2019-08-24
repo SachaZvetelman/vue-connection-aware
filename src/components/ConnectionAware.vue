@@ -5,22 +5,33 @@
 </template>
 
 <script>
-const effectiveTypes = ["slow-2g", "2g", "3g", "4g"];
+const speed = {
+  slow: "slow",
+  medium: "medium",
+  fast: "fast"
+};
+
+const effectiveTypesToSpeed = {
+  "slow-2g": speed.slow,
+  "2g": speed.slow,
+  "3g": speed.medium,
+  "4g": speed.fast
+};
 
 export default {
   name: "ConnectionAware",
   props: {
-    minEffectiveType: {
-      type: String,
-      validator: function(value) {
-        return effectiveTypes.indexOf(value) !== -1;
-      }
+    slow: {
+      type: Boolean,
+      default: false
     },
-    maxEffectiveType: {
-      type: String,
-      validator: function(value) {
-        return effectiveTypes.indexOf(value) !== -1;
-      }
+    medium: {
+      type: Boolean,
+      default: false
+    },
+    fast: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -29,25 +40,11 @@ export default {
         return true;
       }
 
-      const { effectiveType } = navigator.connection;
-      const effectiveTypeIndex = effectiveTypes.indexOf(effectiveType);
+      const effectiveSpeed =
+        effectiveTypesToSpeed[navigator.connection.effectiveType];
+      const shouldRenderForEffectiveSpeed = this[effectiveSpeed];
 
-      const minEffectiveTypeIndex = effectiveTypes.indexOf(
-        this.minEffectiveType
-      );
-
-      const maxEffectiveTypeIndex = effectiveTypes.indexOf(
-        this.maxEffectiveType
-      );
-
-      if (
-        effectiveTypeIndex >= minEffectiveTypeIndex ||
-        effectiveTypeIndex <= maxEffectiveTypeIndex
-      ) {
-        return true;
-      }
-
-      return false;
+      return shouldRenderForEffectiveSpeed;
     }
   }
 };

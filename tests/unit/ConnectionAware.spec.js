@@ -1,73 +1,187 @@
-/* eslint-disable no-unused-labels */
 import { shallowMount } from "@vue/test-utils";
 import ConnectionAware from "@/components/ConnectionAware.vue";
 
 describe("ConnectionAware.vue", () => {
-  it("renders elmenent when minEffectiveType is equal to effectiveType", () => {
-    // Arrange
-    const minEffectiveType = "3g";
-    global.navigator.connection = jest.fn(() => {
-      effectiveType: "3g";
-    });
-
-    // Act
-    const wrapper = shallowMount(ConnectionAware, {
-      propsData: { minEffectiveType }
-    });
-
-    // Assert
-    expect(wrapper.find("div").exists()).toBe(true);
-  });
-
-  it("renders elmenent when maxEffectiveType is equal to effectiveType", () => {
-    // Arrange
-    const maxEffectiveType = "3g";
-    global.navigator.connection = jest.fn(() => {
-      effectiveType: "3g";
-    });
-
-    // Act
-    const wrapper = shallowMount(ConnectionAware, {
-      propsData: { maxEffectiveType }
-    });
-
-    // Assert
-    expect(wrapper.find("div").exists()).toBe(true);
-  });
-
-  it.each([["4g", "3g"], ["3g", "2g"], ["4g", "slow-2g"]])(
-    "renders elmenent when minEffectiveType (%s) is faster than effectiveType (%s)",
-    (minEffectiveType, effectiveType) => {
+  describe("single props", () => {
+    it("renders element when fast prop is true and effectiveType is 4g", () => {
       // Arrange
-      global.navigator.connection = jest.fn(() => {
-        effectiveType;
-      });
+      global.navigator.connection = {
+        effectiveType: "4g"
+      };
 
       // Act
       const wrapper = shallowMount(ConnectionAware, {
-        propsData: { minEffectiveType }
+        propsData: { fast: true }
       });
 
       // Assert
       expect(wrapper.find("div").exists()).toBe(true);
-    }
-  );
+    });
 
-  it.each([["3g", "4g"], ["2g", "3g"], ["slow-2g", "4g"]])(
-    "renders elmenent when maxEffectiveType (%s) is slower than effectiveType (%s)",
-    (maxEffectiveType, effectiveType) => {
+    it("renders element when medium prop is true and effectiveType is 3g", () => {
       // Arrange
-      global.navigator.connection = jest.fn(() => {
-        effectiveType;
-      });
+      global.navigator.connection = {
+        effectiveType: "3g"
+      };
 
       // Act
       const wrapper = shallowMount(ConnectionAware, {
-        propsData: { maxEffectiveType }
+        propsData: { medium: true }
       });
 
       // Assert
       expect(wrapper.find("div").exists()).toBe(true);
-    }
-  );
+    });
+
+    it("renders element when slow prop is true and effectiveType is 2g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "2g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { slow: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(true);
+    });
+
+    it("renders element when slow prop is true and effectiveType is slow-2g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "slow-2g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { slow: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(true);
+    });
+
+    it("does not render element when fast prop is true and effectiveType is not 4g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "3g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+
+    it("does not render element when medium prop is true and effectiveType is not 3g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "4g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { medium: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+
+    it("does not render element when slow prop is true and effectiveType is not 2g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "4g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { slow: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+
+    it("does not render element when slow prop is true and effectiveType is not slow-2g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "3g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { slow: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+  });
+  describe("multiple props", () => {
+    it("renders element when fast and medium props are true and effectiveType is 4g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "4g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true, medium: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(true);
+    });
+
+    it("renders element when fast and medium props are true and effectiveType is 3g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "3g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true, medium: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(true);
+    });
+
+    it("does not render element when fast and medium props are true and effectiveType is not 3g or 4g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "2g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true, medium: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+
+    it("does not render element when fast and slow props are true and effectiveType is 3g", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "3g"
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true, slow: true }
+      });
+
+      // Assert
+      expect(wrapper.find("div").exists()).toBe(false);
+    });
+  });
 });
