@@ -8,6 +8,63 @@ describe("ConnectionAware.vue", () => {
     addEventListenerMock = jest.fn();
   });
 
+  describe("updateEffectiveType", () => {
+    it("called when component created", () => {
+      // Arrange
+      const updateEffectiveType = jest.fn();
+      global.navigator.connection = {
+        effectiveType: "4g",
+        addEventListener: addEventListenerMock
+      };
+
+      // Act
+      shallowMount(ConnectionAware, {
+        propsData: { fast: true },
+        methods: {
+          updateEffectiveType
+        }
+      });
+
+      // Assert
+      expect(updateEffectiveType).toHaveBeenCalled();
+    });
+
+    it("sets the effectiveType data", () => {
+      // Arrange
+      global.navigator.connection = {
+        effectiveType: "4g",
+        addEventListener: addEventListenerMock
+      };
+
+      // Act
+      const wrapper = shallowMount(ConnectionAware, {
+        propsData: { fast: true }
+      });
+
+      wrapper.vm.updateEffectiveType();
+
+      // Assert
+      expect(wrapper.vm.effectiveType).toBe("4g");
+    });
+
+    describe("browser not supported", () => {
+      it("does not set the effectiveType data", () => {
+        // Arrange
+        global.navigator.connection = undefined;
+
+        // Act
+        const wrapper = shallowMount(ConnectionAware, {
+          propsData: { fast: true }
+        });
+
+        wrapper.vm.updateEffectiveType();
+
+        // Assert
+        expect(wrapper.vm.effectiveType).toBe(null);
+      });
+    });
+  });
+
   describe("single props", () => {
     it("renders element when fast prop is true and effectiveType is 4g", () => {
       // Arrange
