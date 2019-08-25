@@ -2,10 +2,10 @@ import { shallowMount } from "@vue/test-utils";
 import ConnectionAware from "@/components/ConnectionAware.vue";
 
 describe("ConnectionAware.vue", () => {
-  let addEventListenerMock;
+  let addEventListener;
 
   beforeEach(() => {
-    addEventListenerMock = jest.fn();
+    addEventListener = jest.fn();
   });
 
   describe("updateEffectiveType", () => {
@@ -14,7 +14,7 @@ describe("ConnectionAware.vue", () => {
       const updateEffectiveType = jest.fn();
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -33,7 +33,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -70,7 +70,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -86,7 +86,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "3g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -102,7 +102,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "2g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -118,7 +118,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "slow-2g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -134,7 +134,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "3g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -150,7 +150,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -166,7 +166,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -182,7 +182,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "3g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -215,7 +215,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "4g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -231,7 +231,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "3g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -247,7 +247,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "2g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -263,7 +263,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       global.navigator.connection = {
         effectiveType: "3g",
-        addEventListener: addEventListenerMock
+        addEventListener
       };
 
       // Act
@@ -292,60 +292,121 @@ describe("ConnectionAware.vue", () => {
   });
 
   describe("event listeners", () => {
-    it("adds event listener on created to update effectiveType when connection changes", () => {
-      // Arrange
-      global.navigator.connection = {
-        effectiveType: "4g",
-        addEventListener: addEventListenerMock
-      };
-
-      // Act
-      shallowMount(ConnectionAware, {
-        propsData: { fast: true }
-      });
-
-      // Assert
-      expect(addEventListenerMock).toHaveBeenCalledWith("change", expect.any(Function)); // TODO: find a more specific assertion. Solution from https://github.com/facebook/jest/issues/6390#issuecomment-394307966
-    });
-
-    it("removes event listener on destroyed to stop updating effectiveType when connection changes", () => {
-      // Arrange
-      const removeEventListenerMock = jest.fn();
-
-      global.navigator.connection = {
-        effectiveType: "4g",
-        addEventListener: addEventListenerMock,
-        removeEventListener: removeEventListenerMock
-      };
-
-      // Act
-      shallowMount(ConnectionAware, {
-        propsData: { fast: true }
-      }).destroy();
-
-      // Assert
-      expect(removeEventListenerMock).toHaveBeenCalledWith("change", expect.any(Function));
-    });
-
-    describe("browser not supported", () => {
-      it("does not add event listener on created to update effectiveType when connection changes", () => {
+    describe("reactive prop is true", () => {
+      it("adds event listener on created to update effectiveType when connection changes", () => {
         // Arrange
-        global.navigator.connection = undefined;
+        global.navigator.connection = {
+          effectiveType: "4g",
+          addEventListener
+        };
 
-        // Act & Assert
+        // Act
         shallowMount(ConnectionAware, {
           propsData: { fast: true }
         });
+
+        // Assert
+        expect(addEventListener).toHaveBeenCalledWith("change", expect.any(Function)); // TODO: find a more specific assertion. Solution from https://github.com/facebook/jest/issues/6390#issuecomment-394307966
+      });
+
+      it("removes event listener on destroyed to stop updating effectiveType when connection changes", () => {
+        // Arrange
+        const removeEventListener = jest.fn();
+
+        global.navigator.connection = {
+          effectiveType: "4g",
+          addEventListener,
+          removeEventListener
+        };
+
+        // Act
+        shallowMount(ConnectionAware, {
+          propsData: { fast: true }
+        }).destroy();
+
+        // Assert
+        expect(removeEventListener).toHaveBeenCalledWith("change", expect.any(Function));
+      });
+
+      describe("browser not supported", () => {
+        it("does not add event listener on created to update effectiveType when connection changes", () => {
+          // Arrange
+          global.navigator.connection = undefined;
+
+          // Act & Assert
+          shallowMount(ConnectionAware, {
+            propsData: { fast: true }
+          });
+        });
+
+        it("does not remove event listener on destroyed to stop updating effectiveType when connection changes", () => {
+          // Arrange
+          global.navigator.connection = undefined;
+
+          // Act & Assert
+          shallowMount(ConnectionAware, {
+            propsData: { fast: true }
+          }).destroy();
+        });
+      });
+    });
+
+    describe("reactive prop is false", () => {
+      it("does not add event listener on created to update effectiveType when connection changes", () => {
+        // Arrange
+        global.navigator.connection = {
+          effectiveType: "4g",
+          addEventListener
+        };
+
+        // Act
+        shallowMount(ConnectionAware, {
+          propsData: { fast: true, reactive: false }
+        });
+
+        // Assert
+        expect(addEventListener).not.toHaveBeenCalled();
       });
 
       it("does not remove event listener on destroyed to stop updating effectiveType when connection changes", () => {
         // Arrange
-        global.navigator.connection = undefined;
+        const removeEventListener = jest.fn();
 
-        // Act & Assert
+        global.navigator.connection = {
+          effectiveType: "4g",
+          addEventListener,
+          removeEventListener
+        };
+
+        // Act
         shallowMount(ConnectionAware, {
-          propsData: { fast: true }
+          propsData: { fast: true, reactive: false }
         }).destroy();
+
+        // Assert
+        expect(removeEventListener).not.toHaveBeenCalled();
+      });
+
+      describe("browser not supported", () => {
+        it("does not add event listener on created to update effectiveType when connection changes", () => {
+          // Arrange
+          global.navigator.connection = undefined;
+
+          // Act & Assert
+          shallowMount(ConnectionAware, {
+            propsData: { fast: true, reactive: false }
+          });
+        });
+
+        it("does not remove event listener on destroyed to stop updating effectiveType when connection changes", () => {
+          // Arrange
+          global.navigator.connection = undefined;
+
+          // Act & Assert
+          shallowMount(ConnectionAware, {
+            propsData: { fast: true, reactive: false }
+          }).destroy();
+        });
       });
     });
   });

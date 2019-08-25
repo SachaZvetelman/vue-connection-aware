@@ -32,6 +32,10 @@ export default {
     fast: {
       type: Boolean,
       default: false
+    },
+    reactive: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {
@@ -60,12 +64,17 @@ export default {
   },
   created: function() {
     if (navigator.connection) {
-      navigator.connection.addEventListener("change", this.updateEffectiveType);
+      if (this.reactive) {
+        navigator.connection.addEventListener(
+          "change",
+          this.updateEffectiveType
+        );
+      }
       this.updateEffectiveType();
     }
   },
   destroyed: function() {
-    if (navigator.connection) {
+    if (navigator.connection && this.reactive) {
       navigator.connection.removeEventListener(
         "change",
         this.updateEffectiveType
