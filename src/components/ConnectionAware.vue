@@ -34,17 +34,42 @@ export default {
       default: false
     }
   },
+  data: function() {
+    return {
+      effectiveType: null
+    };
+  },
   computed: {
     shouldRender: function() {
-      if (!navigator) {
+      if (!this.effectiveType) {
         return true;
       }
 
-      const effectiveSpeed =
-        effectiveTypesToSpeed[navigator.connection.effectiveType];
+      const effectiveSpeed = effectiveTypesToSpeed[this.effectiveType];
       const shouldRenderForEffectiveSpeed = this[effectiveSpeed];
 
       return shouldRenderForEffectiveSpeed;
+    }
+  },
+  methods: {
+    updateEffectiveType() {
+      this.effectiveType = navigator.connection
+        ? navigator.connection.effectiveType
+        : null;
+    }
+  },
+  created: function() {
+    if (navigator.connection) {
+      navigator.connection.addEventListener("change", this.updateEffectiveType);
+      this.updateEffectiveType();
+    }
+  },
+  destroyed: function() {
+    if (navigator.connection) {
+      navigator.connection.removeEventListener(
+        "change",
+        this.updateEffectiveType
+      );
     }
   }
 };
