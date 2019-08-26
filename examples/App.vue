@@ -10,7 +10,7 @@
     <connection-aware fast v-bind:reactive="false">
       <div
         style="color: blueviolet"
-      >This gif is rendered when connection is fast and it's not reactive (meaning that it won't react (or Vue...?) to connection changes)</div>
+      >This gif is rendered when connection is fast and it's not reactive (meaning that it won't react to connection changes)</div>
       <img src="https://i.imgur.com/ng9Hl87.gif" crossorigin="anonymous" />
     </connection-aware>
     <connection-aware medium fast>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ConnectionAware from "./components/ConnectionAware.vue";
+import ConnectionAware from "@/components/ConnectionAware.vue";
 
 export default {
   name: "app",
