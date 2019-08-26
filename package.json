@@ -1,6 +1,6 @@
 {
   "name": "vue-connection-aware",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "A Vue component to easily create connection-aware web applications 📶",
   "author": "Sacha Zvetelman",
