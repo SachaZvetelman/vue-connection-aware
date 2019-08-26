@@ -95,4 +95,4 @@ Show a div when on a medium or fast connection (`3g` or `4g`) but don't destroy 
 
 ## Contributing
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See [CONTRIBUTING.md](https://github.com/SachaZvetelman/vue-connection-aware/blob/master/CONTRIBUTING.md)
