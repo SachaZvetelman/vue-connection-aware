@@ -7,7 +7,6 @@ export default [
   {
     input: "src/components/ConnectionAware.vue",
     output: {
-      banner: "/* my-library version " + version + " */",
       format: "esm",
       file: "dist/ConnectionAware.js"
     },
