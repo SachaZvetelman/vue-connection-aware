@@ -6,7 +6,7 @@ Serve the right content to your users based on their connectivity. Vue-connectio
 
 If you want to read more about the Network Information API, I recommend you this article: [Dynamic resources using the Network Information API and service workers](https://deanhume.com/dynamic-resources-using-the-network-information-api-and-service-workers/).
 
-## Setup
+## 📦 Setup 
 
 ### Installing the package
 
@@ -41,7 +41,7 @@ export default {
 };
 ```
 
-## Usage
+## ⌨️ Usage
 
 Wrap the DOM element you want to render for a specific effective connection type with the component markup:
 
@@ -51,7 +51,7 @@ Wrap the DOM element you want to render for a specific effective connection type
 </connection-aware>
 ```
 
-## Options
+## ⚙️ Options
 
 You can pass different props to choose when you want to render the component and when not to, and how you want it to behave.
 
@@ -62,7 +62,7 @@ You can pass different props to choose when you want to render the component and
 | `slow`     | `Boolean` | `false`  | `false` | Render the component when the effective type is `2g` or `slow-2g`                                                                                               |
 | `reactive` | `Boolean` | `false`  | `true`  | The component reacts to changes in the connection (e.g. if a component was initially rendered with a `4g` connection, hide it if the connection drops to `3g`)  |
 
-## Common examples
+## 🧪 Common examples
 
 Load and render a heavy image only when on a fast connection (`4g`):
 ```
