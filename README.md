@@ -96,3 +96,11 @@ Show a div when on a medium or fast connection (`3g` or `4g`) but don't destroy 
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/SachaZvetelman/vue-connection-aware/blob/master/CONTRIBUTING.md)
+
+## Influences
+
+The articles below significantly helped me, so I wanted to make sure they are recognised:
+- Addy Osmani: [Adaptive Serving](https://addyosmani.com/blog/adaptive-serving/)
+- Max Böck: [Connection-Aware Components](https://mxb.dev/blog/connection-aware-components/)
+- Netanel Basal: [Connection-Aware Components in Angular](https://netbasal.com/connection-aware-components-in-angular-3a66bb0bab6f)
+
