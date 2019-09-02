@@ -36,48 +36,57 @@ export default {
     reactive: {
       type: Boolean,
       default: true
+    },
+    online: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {
     return {
-      effectiveType: null
+      connection: {
+        effectiveType: null,
+        isOnline: null
+      }
     };
   },
   computed: {
     shouldRender: function() {
-      if (!this.effectiveType) {
+      if (
+        this.connection.effectiveType === null &&
+        this.connection.isOnline === null
+      ) {
         return true;
       }
 
-      const effectiveSpeed = effectiveTypesToSpeed[this.effectiveType];
-      const shouldRenderForEffectiveSpeed = this[effectiveSpeed];
+      const effectiveSpeed =
+        effectiveTypesToSpeed[this.connection.effectiveType];
+      const shouldRenderForEffectiveSpeed =
+        this[effectiveSpeed] || (!this.slow && !this.medium && !this.fast);
+      const shouldRenderForOnlineStatus =
+        this.connection.isOnline === this.online;
 
-      return shouldRenderForEffectiveSpeed;
+      return shouldRenderForEffectiveSpeed && shouldRenderForOnlineStatus;
     }
   },
   methods: {
-    updateEffectiveType() {
-      this.effectiveType = navigator.connection
-        ? navigator.connection.effectiveType
-        : null;
+    updateConnection() {
+      this.connection.effectiveType = navigator?.connection?.effectiveType;
+      this.connection.isOnline = navigator?.onLine;
     }
   },
   created: function() {
-    if (navigator.connection) {
-      if (this.reactive) {
-        navigator.connection.addEventListener(
-          "change",
-          this.updateEffectiveType
-        );
-      }
-      this.updateEffectiveType();
+    if (this.reactive) {
+      navigator?.connection?.addEventListener("change", this.updateConnection);
     }
+
+    this.updateConnection();
   },
   destroyed: function() {
-    if (navigator.connection && this.reactive) {
-      navigator.connection.removeEventListener(
+    if (this.reactive) {
+      navigator?.connection?.removeEventListener(
         "change",
-        this.updateEffectiveType
+        this.updateConnection
       );
     }
   }

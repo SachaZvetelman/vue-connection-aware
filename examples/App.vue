@@ -65,6 +65,24 @@
           </div>
         </div>
       </connection-aware>
+      <connection-aware v-bind:online="false">
+        <div class="col">
+          <div class="card">
+            <div class="card-content">
+              <p>This text is rendered when offline.</p>
+            </div>
+          </div>
+        </div>
+      </connection-aware>
+      <connection-aware online>
+        <div class="col">
+          <div class="card">
+            <div class="card-content">
+              <p>This text is rendered when online.</p>
+            </div>
+          </div>
+        </div>
+      </connection-aware>
     </div>
   </div>
 </template>
