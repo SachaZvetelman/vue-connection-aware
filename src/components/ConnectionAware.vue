@@ -52,29 +52,18 @@ export default {
   },
   computed: {
     shouldRender: function() {
-      if (
-        this.connection.effectiveType === null &&
-        this.connection.isOnline === null
-      ) {
+      if (this.connection.effectiveType === null && this.connection.isOnline === null) {
         return true;
       }
 
-      const effectiveSpeed =
-        effectiveTypesToSpeed[this.connection.effectiveType];
-      const shouldRenderForEffectiveSpeed =
-        this[effectiveSpeed] || (!this.slow && !this.medium && !this.fast);
-      const shouldRenderForOnlineStatus =
-        this.connection.isOnline === this.online;
+      const effectiveSpeed = effectiveTypesToSpeed[this.connection.effectiveType];
+      const shouldRenderForEffectiveSpeed = this[effectiveSpeed] || (!this.slow && !this.medium && !this.fast);
+      const shouldRenderForOnlineStatus = this.connection.isOnline === this.online;
 
       return shouldRenderForEffectiveSpeed && shouldRenderForOnlineStatus;
     }
   },
-  methods: {
-    updateConnection() {
-      this.connection.effectiveType = navigator?.connection?.effectiveType;
-      this.connection.isOnline = navigator?.onLine;
-    }
-  },
+
   created: function() {
     if (this.reactive) {
       navigator?.connection?.addEventListener("change", this.updateConnection);
@@ -82,12 +71,17 @@ export default {
 
     this.updateConnection();
   },
+
   destroyed: function() {
     if (this.reactive) {
-      navigator?.connection?.removeEventListener(
-        "change",
-        this.updateConnection
-      );
+      navigator?.connection?.removeEventListener("change", this.updateConnection);
+    }
+  },
+
+  methods: {
+    updateConnection() {
+      this.connection.effectiveType = navigator?.connection?.effectiveType;
+      this.connection.isOnline = navigator?.onLine;
     }
   }
 };
