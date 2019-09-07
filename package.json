@@ -4,6 +4,7 @@
   "private": false,
   "description": "A Vue component to easily create connection-aware web applications 📶",
   "author": "Sacha Zvetelman",
+  "repository": "github:SachaZvetelman/vue-connection-aware",
   "license": "MIT",
   "main": "./dist/ConnectionAware.js",
   "files": [
