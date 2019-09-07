@@ -67,6 +67,7 @@ _Note: if no speed prop (i.e. `slow`, `medium` or `fast`) is specified, the comp
 | `medium`   | `Boolean` | `false`  | `false` | Render the component when the effective type is `3g`                                                                                                           |
 | `slow`     | `Boolean` | `false`  | `false` | Render the component when the effective type is `2g` or `slow-2g`                                                                                              |
 | `reactive` | `Boolean` | `false`  | `true`  | The component reacts to changes in the connection (e.g. if a component was initially rendered with a `4g` connection, hide it if the connection drops to `3g`) |
+| `online` | `Boolean` | `false`  | `true`  | Render the component when its online status matches this property (e.g. if `false`, the component will render only when the browser is offline) |
 
 ## 🧪 Common examples
 
