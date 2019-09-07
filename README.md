@@ -98,7 +98,7 @@ Warn the user their connection is slow (`2g` or `slow-2g`):
 Show a div when on a medium or fast connection (`3g` or `4g`) but don't destroy it if the connection slows down (to `2g` or `slow-2g`):
 
 ```
-<connection-aware medium fast v-bind:reactive="false">
+<connection-aware medium fast :reactive="false">
   <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc placerat, velit sit amet dapibus finibus, sapien nunc commodo risus, eget luctus tortor eros eu risus. Phasellus molestie tincidunt est ac egestas</div>
 </connection-aware>
 ```

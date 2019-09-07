@@ -12,10 +12,7 @@
         <div class="col">
           <div class="card">
             <div class="card-image">
-              <img
-                src="https://media0.giphy.com/media/9JtCD5WDQHfqQgmTjN/giphy.gif"
-                crossorigin="anonymous"
-              />
+              <img src="https://media0.giphy.com/media/9JtCD5WDQHfqQgmTjN/giphy.gif" crossorigin="anonymous" />
             </div>
             <div class="card-content">
               <p>This gif is rendered when connection is fast</p>
@@ -44,14 +41,17 @@
           </div>
         </div>
       </connection-aware>
-      <connection-aware fast v-bind:reactive="false">
+      <connection-aware fast :reactive="false">
         <div class="col">
           <div class="card">
             <div class="card-image">
               <img src="https://i.imgur.com/ng9Hl87.gif" crossorigin="anonymous" />
             </div>
             <div class="card-content">
-              <p>This gif is rendered when connection is fast and it's not reactive (meaning that it won't react to connection changes)</p>
+              <p>
+                This gif is rendered when connection is fast and it's not reactive (meaning that it won't react to
+                connection changes)
+              </p>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
           </div>
         </div>
       </connection-aware>
-      <connection-aware v-bind:online="false">
+      <connection-aware :online="false">
         <div class="col">
           <div class="card">
             <div class="card-content">
@@ -91,7 +91,7 @@
 import ConnectionAware from "@/components/ConnectionAware.vue";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     ConnectionAware
   }
