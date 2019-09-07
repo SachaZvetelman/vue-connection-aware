@@ -52,7 +52,6 @@ export default {
   },
   computed: {
     shouldRender: function() {
-      debugger;
       if (this.connection.effectiveType == null && this.connection.isOnline == null) {
         return true;
       }
