@@ -1,5 +1,7 @@
 # vue-connection-aware
 
+![Downloads per week](https://img.shields.io/npm/dw/vue-connection-aware.svg)
+
 _⚠️ Disclaimer: this is an Alpha version, so be careful when using this on a Production environment._
 
 Serve the right content to your users based on their connectivity. Vue-connection-aware uses the power of the [Network Information API](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API) under the hood, conveniently exposing its funcionality as a Vue component.
