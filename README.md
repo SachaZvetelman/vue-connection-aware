@@ -1,5 +1,6 @@
 # vue-connection-aware
 
+![Version](https://img.shields.io/npm/v/vue-connection-aware.svg?style=flat&color=brightgreen)
 ![Downloads per week](https://img.shields.io/npm/dw/vue-connection-aware.svg)
 
 _⚠️ Disclaimer: this is an Alpha version, so be careful when using this on a Production environment._
