@@ -88,13 +88,8 @@
 </template>
 
 <script>
-import ConnectionAware from "@/components/ConnectionAware.vue";
-
 export default {
-  name: "App",
-  components: {
-    ConnectionAware
-  }
+  name: "App"
 };
 </script>
 

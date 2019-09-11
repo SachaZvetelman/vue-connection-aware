@@ -1,6 +1,6 @@
-import ConnectionAware from "./components/ConnectionAware.vue";
+import ConnectionAware from "./ConnectionAware.vue";
 
-export default {
+const ConnectionAwarePlugin = {
   install(Vue) {
     Vue.component(ConnectionAware.name, ConnectionAware);
 
@@ -9,3 +9,5 @@ export default {
     }
   }
 };
+
+export default ConnectionAwarePlugin;
