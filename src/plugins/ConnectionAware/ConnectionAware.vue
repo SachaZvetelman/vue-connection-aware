@@ -5,31 +5,24 @@
 </template>
 
 <script>
-const speed = {
+const connectionCategory = {
   slow: "slow",
   medium: "medium",
   fast: "fast"
 };
 
-const effectiveTypesToSpeed = {
-  "slow-2g": speed.slow,
-  "2g": speed.slow,
-  "3g": speed.medium,
-  "4g": speed.fast
-};
-
 export default {
   name: "ConnectionAware",
   props: {
-    slow: {
+    [connectionCategory.slow]: {
       type: Boolean,
       default: false
     },
-    medium: {
+    [connectionCategory.medium]: {
       type: Boolean,
       default: false
     },
-    fast: {
+    [connectionCategory.fast]: {
       type: Boolean,
       default: false
     },
@@ -42,25 +35,32 @@ export default {
       default: true
     }
   },
+
   data: function() {
     return {
       connection: {
-        effectiveType: null,
+        downloadSpeed: null,
         isOnline: null
+      },
+      connectionCategoryThreshold: {
+        [connectionCategory.slow]: 0.45,
+        [connectionCategory.medium]: 1.6,
+        [connectionCategory.fast]: Number.MAX_SAFE_INTEGER
       }
     };
   },
+
   computed: {
     shouldRender: function() {
-      if (this.connection.effectiveType == null && this.connection.isOnline == null) {
+      if (this.connection.downloadSpeed == null && this.connection.isOnline == null) {
         return true;
       }
 
-      const effectiveSpeed = effectiveTypesToSpeed[this.connection.effectiveType];
-      const shouldRenderForEffectiveSpeed = this[effectiveSpeed] || (!this.slow && !this.medium && !this.fast);
+      const connectionCategory = this.getConnectionCategoryByDownloadSpeed(this.connection.downloadSpeed);
+      const shouldRenderForDownloadSpeed = this[connectionCategory] || (!this.slow && !this.medium && !this.fast);
       const shouldRenderForOnlineStatus = this.connection.isOnline === this.online;
 
-      return shouldRenderForEffectiveSpeed && shouldRenderForOnlineStatus;
+      return shouldRenderForDownloadSpeed && shouldRenderForOnlineStatus;
     }
   },
 
@@ -80,8 +80,15 @@ export default {
 
   methods: {
     updateConnection() {
-      this.connection.effectiveType = navigator?.connection?.effectiveType;
+      this.connection.downloadSpeed = navigator?.connection?.downlink;
       this.connection.isOnline = navigator?.onLine;
+    },
+
+    getConnectionCategoryByDownloadSpeed(downloadSpeed) {
+      if (downloadSpeed <= this.connectionCategoryThreshold.slow) return connectionCategory.slow;
+      if (downloadSpeed <= this.connectionCategoryThreshold.medium) return connectionCategory.medium;
+
+      return connectionCategory.fast;
     }
   }
 };

@@ -20,7 +20,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       const updateConnection = jest.fn();
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 10,
         addEventListener
       };
 
@@ -36,10 +36,10 @@ describe("ConnectionAware.vue", () => {
       expect(updateConnection).toHaveBeenCalled();
     });
 
-    it("sets the effectiveType data", () => {
+    it("sets the downloadSpeed data", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 10,
         addEventListener
       };
 
@@ -51,7 +51,7 @@ describe("ConnectionAware.vue", () => {
       wrapper.vm.updateConnection();
 
       // Assert
-      expect(wrapper.vm.connection.effectiveType).toBe("4g");
+      expect(wrapper.vm.connection.downloadSpeed).toBe(10);
     });
 
     it("sets the isOnline data", () => {
@@ -70,7 +70,7 @@ describe("ConnectionAware.vue", () => {
     });
 
     describe("browser not supported", () => {
-      it("does not set the effectiveType data", () => {
+      it("does not set the downloadSpeed data", () => {
         // Arrange
         global.navigator.connection = undefined;
 
@@ -82,7 +82,7 @@ describe("ConnectionAware.vue", () => {
         wrapper.vm.updateConnection();
 
         // Assert
-        expect(wrapper.vm.connection.effectiveType).toBe(undefined);
+        expect(wrapper.vm.connection.downloadSpeed).toBe(undefined);
       });
 
       it("does not set the isOnline data", () => {
@@ -102,11 +102,49 @@ describe("ConnectionAware.vue", () => {
     });
   });
 
+  describe("getConnectionCategoryByDownloadSpeed", () => {
+    it("returns slow category when speed is within the slow category", () => {
+      // Arrange
+      const downloadSpeed = 0.4;
+      const wrapper = shallowMount(ConnectionAware);
+
+      // Act
+      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+
+      // Assert
+      expect(result).toBe("slow");
+    });
+
+    it("returns medium category when speed is within the medium category", () => {
+      // Arrange
+      const downloadSpeed = 1;
+      const wrapper = shallowMount(ConnectionAware);
+
+      // Act
+      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+
+      // Assert
+      expect(result).toBe("medium");
+    });
+
+    it("returns fast category when speed is within the fast category", () => {
+      // Arrange
+      const downloadSpeed = 10;
+      const wrapper = shallowMount(ConnectionAware);
+
+      // Act
+      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+
+      // Assert
+      expect(result).toBe("fast");
+    });
+  });
+
   describe("single props", () => {
     it("renders element when no props are passed", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 10,
         addEventListener
       };
 
@@ -117,10 +155,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(true);
     });
 
-    it("renders element when fast prop is true and effectiveType is 4g", () => {
+    it("renders element when fast prop is true and downloadSpeed is within the fast category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 10,
         addEventListener
       };
 
@@ -133,10 +171,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(true);
     });
 
-    it("renders element when medium prop is true and effectiveType is 3g", () => {
+    it("renders element when medium prop is true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "3g",
+        downlink: 1,
         addEventListener
       };
 
@@ -149,26 +187,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(true);
     });
 
-    it("renders element when slow prop is true and effectiveType is 2g", () => {
+    it("renders element when slow prop is true and downloadSpeed is within the slow category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "2g",
-        addEventListener
-      };
-
-      // Act
-      const wrapper = shallowMount(ConnectionAware, {
-        propsData: { slow: true }
-      });
-
-      // Assert
-      expect(wrapper.find("div").exists()).toBe(true);
-    });
-
-    it("renders element when slow prop is true and effectiveType is slow-2g", () => {
-      // Arrange
-      global.navigator.connection = {
-        effectiveType: "slow-2g",
+        downlink: 0.4,
         addEventListener
       };
 
@@ -197,10 +219,10 @@ describe("ConnectionAware.vue", () => {
       }
     );
 
-    it("does not render element when fast prop is true and effectiveType is not 4g", () => {
+    it("does not render element when fast prop is true and downloadSpeed is not within the fast category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "3g",
+        downlink: 1,
         addEventListener
       };
 
@@ -213,10 +235,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(false);
     });
 
-    it("does not render element when medium prop is true and effectiveType is not 3g", () => {
+    it("does not render element when medium prop is true and downloadSpeed is not within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 0.4,
         addEventListener
       };
 
@@ -229,26 +251,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(false);
     });
 
-    it("does not render element when slow prop is true and effectiveType is not 2g", () => {
+    it("does not render element when slow prop is true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
-        addEventListener
-      };
-
-      // Act
-      const wrapper = shallowMount(ConnectionAware, {
-        propsData: { slow: true }
-      });
-
-      // Assert
-      expect(wrapper.find("div").exists()).toBe(false);
-    });
-
-    it("does not render element when slow prop is true and effectiveType is not slow-2g", () => {
-      // Arrange
-      global.navigator.connection = {
-        effectiveType: "3g",
+        downlink: 0.6,
         addEventListener
       };
 
@@ -295,10 +301,10 @@ describe("ConnectionAware.vue", () => {
   });
 
   describe("multiple props", () => {
-    it("renders element when fast and medium props are true and effectiveType is 4g", () => {
+    it("renders element when fast and medium props are true and downloadSpeed is within the fast category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "4g",
+        downlink: 10,
         addEventListener
       };
 
@@ -311,10 +317,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(true);
     });
 
-    it("renders element when fast and medium props are true and effectiveType is 3g", () => {
+    it("renders element when fast and medium props are true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "3g",
+        downlink: 1,
         addEventListener
       };
 
@@ -327,10 +333,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(true);
     });
 
-    it("does not render element when fast and medium props are true and effectiveType is not 3g or 4g", () => {
+    it("does not render element when fast and medium props are true and downloadSpeed is within the slow category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "2g",
+        downlink: 0.4,
         addEventListener
       };
 
@@ -343,10 +349,10 @@ describe("ConnectionAware.vue", () => {
       expect(wrapper.find("div").exists()).toBe(false);
     });
 
-    it("does not render element when fast and slow props are true and effectiveType is 3g", () => {
+    it("does not render element when fast and slow props are true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        effectiveType: "3g",
+        downlink: 1,
         addEventListener
       };
 
@@ -381,7 +387,7 @@ describe("ConnectionAware.vue", () => {
       it("adds event listener on created to update the connection when it changes", () => {
         // Arrange
         global.navigator.connection = {
-          effectiveType: "4g",
+          downlink: 10,
           addEventListener
         };
 
@@ -399,7 +405,7 @@ describe("ConnectionAware.vue", () => {
         const removeEventListener = jest.fn();
 
         global.navigator.connection = {
-          effectiveType: "4g",
+          downlink: 10,
           addEventListener,
           removeEventListener
         };
@@ -440,7 +446,7 @@ describe("ConnectionAware.vue", () => {
       it("does not add event listener on created to update the connection when it changes", () => {
         // Arrange
         global.navigator.connection = {
-          effectiveType: "4g",
+          downlink: 10,
           addEventListener
         };
 
@@ -458,7 +464,7 @@ describe("ConnectionAware.vue", () => {
         const removeEventListener = jest.fn();
 
         global.navigator.connection = {
-          effectiveType: "4g",
+          downlink: 10,
           addEventListener,
           removeEventListener
         };
