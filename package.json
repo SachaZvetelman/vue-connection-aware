@@ -1,6 +1,6 @@
 {
   "name": "vue-connection-aware",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": false,
   "description": "A Vue component to easily create connection-aware web applications 📶",
   "author": "Sacha Zvetelman",
@@ -12,7 +12,6 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve examples/main.js",
-    "build": "vue-cli-service build",
     "bundle": "rollup -c",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",

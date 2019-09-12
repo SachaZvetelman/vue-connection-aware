@@ -5,35 +5,35 @@ import { terser } from "rollup-plugin-terser";
 
 export default [
   {
-    input: "src/components/ConnectionAware.vue",
+    input: "src/plugins/ConnectionAware/index.js",
     output: {
       format: "esm",
       file: "dist/ConnectionAware.js"
     },
     plugins: [
       vue(),
-      commonjs(),
       babel({
         runtimeHelpers: true,
         exclude: "node_modules/**",
         extensions: [".js", ".vue"]
-      })
+      }),
+      commonjs()
     ]
   },
   {
-    input: "src/components/ConnectionAware.vue",
+    input: "src/plugins/ConnectionAware/index.js",
     output: {
       format: "esm",
       file: "dist/ConnectionAware.min.js"
     },
     plugins: [
       vue(),
-      commonjs(),
       babel({
         runtimeHelpers: true,
         exclude: "node_modules/**",
         extensions: [".js", ".vue"]
       }),
+      commonjs(),
       terser()
     ]
   }

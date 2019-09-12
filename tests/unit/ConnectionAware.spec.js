@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import ConnectionAware from "@/components/ConnectionAware.vue";
+import ConnectionAware from "@/plugins/ConnectionAware/ConnectionAware.vue";
 
 describe("ConnectionAware.vue", () => {
   let addEventListener;
