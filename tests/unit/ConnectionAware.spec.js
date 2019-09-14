@@ -1,6 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
 import ConnectionAware from "@/plugins/ConnectionAware/ConnectionAware.vue";
 
+const slowSpeed = 1;
+const mediumSpeed = 5;
+const fastSpeed = 10;
+
 describe("ConnectionAware.vue", () => {
   let addEventListener;
   let onLineGetter;
@@ -20,7 +24,7 @@ describe("ConnectionAware.vue", () => {
       // Arrange
       const updateConnection = jest.fn();
       global.navigator.connection = {
-        downlink: 10,
+        downlink: fastSpeed,
         addEventListener
       };
 
@@ -39,7 +43,7 @@ describe("ConnectionAware.vue", () => {
     it("sets the downloadSpeed data", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 10,
+        downlink: fastSpeed,
         addEventListener
       };
 
@@ -103,37 +107,40 @@ describe("ConnectionAware.vue", () => {
   });
 
   describe("getConnectionCategoryByDownloadSpeed", () => {
-    it("returns slow category when speed is within the slow category", () => {
-      // Arrange
-      const downloadSpeed = 0.4;
-      const wrapper = shallowMount(ConnectionAware);
+    it.each([[slowSpeed], [slowSpeed + 1]])(
+      "returns slow category when speed is within the slow category",
+      speed => {
+        // Arrange
+        const wrapper = shallowMount(ConnectionAware);
 
-      // Act
-      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+        // Act
+        const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(speed);
 
-      // Assert
-      expect(result).toBe("slow");
-    });
+        // Assert
+        expect(result).toBe("slow");
+      }
+    );
 
-    it("returns medium category when speed is within the medium category", () => {
-      // Arrange
-      const downloadSpeed = 1;
-      const wrapper = shallowMount(ConnectionAware);
+    it.each([[mediumSpeed], [mediumSpeed + 1]])(
+      "returns medium category when speed is within the medium category",
+      speed => {
+        // Arrange
+        const wrapper = shallowMount(ConnectionAware);
 
-      // Act
-      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+        // Act
+        const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(speed);
 
-      // Assert
-      expect(result).toBe("medium");
-    });
+        // Assert
+        expect(result).toBe("medium");
+      }
+    );
 
     it("returns fast category when speed is within the fast category", () => {
       // Arrange
-      const downloadSpeed = 10;
       const wrapper = shallowMount(ConnectionAware);
 
       // Act
-      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(downloadSpeed);
+      const result = wrapper.vm.getConnectionCategoryByDownloadSpeed(fastSpeed);
 
       // Assert
       expect(result).toBe("fast");
@@ -174,7 +181,7 @@ describe("ConnectionAware.vue", () => {
     it("renders element when medium prop is true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 1,
+        downlink: mediumSpeed,
         addEventListener
       };
 
@@ -190,7 +197,7 @@ describe("ConnectionAware.vue", () => {
     it("renders element when slow prop is true and downloadSpeed is within the slow category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 0.4,
+        downlink: slowSpeed,
         addEventListener
       };
 
@@ -222,7 +229,7 @@ describe("ConnectionAware.vue", () => {
     it("does not render element when fast prop is true and downloadSpeed is not within the fast category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 1,
+        downlink: mediumSpeed,
         addEventListener
       };
 
@@ -238,7 +245,7 @@ describe("ConnectionAware.vue", () => {
     it("does not render element when medium prop is true and downloadSpeed is not within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 0.4,
+        downlink: slowSpeed,
         addEventListener
       };
 
@@ -254,7 +261,7 @@ describe("ConnectionAware.vue", () => {
     it("does not render element when slow prop is true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 0.6,
+        downlink: mediumSpeed,
         addEventListener
       };
 
@@ -304,7 +311,7 @@ describe("ConnectionAware.vue", () => {
     it("renders element when fast and medium props are true and downloadSpeed is within the fast category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 10,
+        downlink: fastSpeed,
         addEventListener
       };
 
@@ -320,7 +327,7 @@ describe("ConnectionAware.vue", () => {
     it("renders element when fast and medium props are true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 1,
+        downlink: mediumSpeed,
         addEventListener
       };
 
@@ -336,7 +343,7 @@ describe("ConnectionAware.vue", () => {
     it("does not render element when fast and medium props are true and downloadSpeed is within the slow category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 0.4,
+        downlink: slowSpeed,
         addEventListener
       };
 
@@ -352,7 +359,7 @@ describe("ConnectionAware.vue", () => {
     it("does not render element when fast and slow props are true and downloadSpeed is within the medium category", () => {
       // Arrange
       global.navigator.connection = {
-        downlink: 1,
+        downlink: mediumSpeed,
         addEventListener
       };
 
@@ -387,7 +394,7 @@ describe("ConnectionAware.vue", () => {
       it("adds event listener on created to update the connection when it changes", () => {
         // Arrange
         global.navigator.connection = {
-          downlink: 10,
+          downlink: fastSpeed,
           addEventListener
         };
 
@@ -405,7 +412,7 @@ describe("ConnectionAware.vue", () => {
         const removeEventListener = jest.fn();
 
         global.navigator.connection = {
-          downlink: 10,
+          downlink: fastSpeed,
           addEventListener,
           removeEventListener
         };
@@ -446,7 +453,7 @@ describe("ConnectionAware.vue", () => {
       it("does not add event listener on created to update the connection when it changes", () => {
         // Arrange
         global.navigator.connection = {
-          downlink: 10,
+          downlink: fastSpeed,
           addEventListener
         };
 
@@ -464,7 +471,7 @@ describe("ConnectionAware.vue", () => {
         const removeEventListener = jest.fn();
 
         global.navigator.connection = {
-          downlink: 10,
+          downlink: fastSpeed,
           addEventListener,
           removeEventListener
         };

@@ -43,8 +43,8 @@ export default {
         isOnline: null
       },
       connectionCategoryThreshold: {
-        [connectionCategory.slow]: 0.45,
-        [connectionCategory.medium]: 1.6,
+        [connectionCategory.slow]: 2,
+        [connectionCategory.medium]: 6,
         [connectionCategory.fast]: Number.MAX_SAFE_INTEGER
       }
     };
