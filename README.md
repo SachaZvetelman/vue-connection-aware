@@ -32,7 +32,16 @@ Add it globally:
 ```
 import ConnectionAware from 'vue-connection-aware';
 
-Vue.use(ConnectionAware);
+// Using default options.
+Vue.use(ConnectionAware); 
+
+// Or specifying the different category thresholds.
+Vue.use(ConnectionAware, {
+  connectionCategoryThreshold: {
+    slow: 1,
+    medium: 3
+  }
+});
 ```
 
 or import it directly into your component:
@@ -47,6 +56,19 @@ export default {
   }
 };
 ```
+
+### Connection category thresholds
+
+The default connection category thresholds, in Mbps, are:
+```
+slow: 2,
+medium: 6,
+fast: Number.MAX_SAFE_INTEGER
+```
+
+This means that any download speed up to 2 Mbps, will be considered as `slow`. Any connection above 2 Mbps up to 6 Mbps will be considered as `medium`. Anything above that will be `fast`. You can override these defaults by specifying the defaults when installing the component as a plugin.
+
+Each web application will have different requirements, and that's why you can configure the different thresholds.
 
 ## ⌨️ Usage
 
@@ -66,10 +88,10 @@ _Note: if no speed prop (i.e. `slow`, `medium` or `fast`) is specified, the comp
 
 | Name       | Type      | Required | Default | Description                                                                                                                                                    |
 | ---------- | --------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fast`     | `Boolean` | `false`  | `false` | Render the component when the effective type is `4g`                                                                                                           |
-| `medium`   | `Boolean` | `false`  | `false` | Render the component when the effective type is `3g`                                                                                                           |
-| `slow`     | `Boolean` | `false`  | `false` | Render the component when the effective type is `2g` or `slow-2g`                                                                                              |
-| `reactive` | `Boolean` | `false`  | `true`  | The component reacts to changes in the connection (e.g. if a component was initially rendered with a `4g` connection, hide it if the connection drops to `3g`) |
+| `fast`     | `Boolean` | `false`  | `false` | Render the component when the download speed is greater than the `medium` connection threshold                                                                                                           |
+| `medium`   | `Boolean` | `false`  | `false` | Render the component when the download speed is greater than the `slow` connection threshold and less than or equal to the `medium` connection threshold                                                                                                           |
+| `slow`     | `Boolean` | `false`  | `false` | Render the component when the download speed is less than or equal to the `slow` connection threshold                                                                                              |
+| `reactive` | `Boolean` | `false`  | `true`  | The component reacts to changes in the connection (e.g. if a component was initially rendered with a `fast` connection, hide it if the connection drops to `medium`) |
 | `online` | `Boolean` | `false`  | `true`  | Render the component when its online status matches this property (e.g. if `false`, the component will render only when the browser is offline) |
 
 ## 🧪 Common examples
