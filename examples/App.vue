@@ -12,7 +12,10 @@
         <div class="col">
           <div class="card">
             <div class="card-image">
-              <img src="https://media0.giphy.com/media/9JtCD5WDQHfqQgmTjN/giphy.gif" crossorigin="anonymous" />
+              <img
+                src="https://media0.giphy.com/media/9JtCD5WDQHfqQgmTjN/giphy.gif"
+                crossorigin="anonymous"
+              />
             </div>
             <div class="card-content">
               <p>This gif is rendered when connection is fast</p>
@@ -49,8 +52,8 @@
             </div>
             <div class="card-content">
               <p>
-                This gif is rendered when connection is fast and it's not reactive (meaning that it won't react to
-                connection changes)
+                This gif is rendered when connection is fast and it's not reactive (meaning that it won't
+                react to connection changes)
               </p>
             </div>
           </div>

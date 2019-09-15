@@ -1,8 +1,12 @@
 import ConnectionAware from "./ConnectionAware.vue";
+import merge from "lodash.merge";
 
-function install(Vue) {
+function install(Vue, options) {
   if (install.installed) return;
   install.installed = true;
+
+  merge(ConnectionAware.DEFAULT_OPTIONS, options);
+
   Vue.component(ConnectionAware.name, ConnectionAware);
 }
 
