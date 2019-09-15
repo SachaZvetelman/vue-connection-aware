@@ -5,24 +5,27 @@
 </template>
 
 <script>
-const connectionCategory = {
-  slow: "slow",
-  medium: "medium",
-  fast: "fast"
+const DEFAULT_OPTIONS = {
+  connectionCategoryThreshold: {
+    slow: 2,
+    medium: 6,
+    fast: Number.MAX_SAFE_INTEGER
+  }
 };
 
 export default {
+  DEFAULT_OPTIONS: DEFAULT_OPTIONS,
   name: "ConnectionAware",
   props: {
-    [connectionCategory.slow]: {
+    slow: {
       type: Boolean,
       default: false
     },
-    [connectionCategory.medium]: {
+    medium: {
       type: Boolean,
       default: false
     },
-    [connectionCategory.fast]: {
+    fast: {
       type: Boolean,
       default: false
     },
@@ -42,11 +45,7 @@ export default {
         downloadSpeed: null,
         isOnline: null
       },
-      connectionCategoryThreshold: {
-        [connectionCategory.slow]: 2,
-        [connectionCategory.medium]: 6,
-        [connectionCategory.fast]: Number.MAX_SAFE_INTEGER
-      }
+      connectionCategoryThreshold: DEFAULT_OPTIONS.connectionCategoryThreshold
     };
   },
 
@@ -57,7 +56,9 @@ export default {
       }
 
       const connectionCategory = this.getConnectionCategoryByDownloadSpeed(this.connection.downloadSpeed);
-      const shouldRenderForDownloadSpeed = this[connectionCategory] || (!this.slow && !this.medium && !this.fast);
+      const shouldRenderForDownloadSpeed =
+        this[connectionCategory] || (!this.slow && !this.medium && !this.fast);
+
       const shouldRenderForOnlineStatus = this.connection.isOnline === this.online;
 
       return shouldRenderForDownloadSpeed && shouldRenderForOnlineStatus;
@@ -85,10 +86,10 @@ export default {
     },
 
     getConnectionCategoryByDownloadSpeed(downloadSpeed) {
-      if (downloadSpeed <= this.connectionCategoryThreshold.slow) return connectionCategory.slow;
-      if (downloadSpeed <= this.connectionCategoryThreshold.medium) return connectionCategory.medium;
+      if (downloadSpeed <= this.connectionCategoryThreshold.slow) return "slow";
+      if (downloadSpeed <= this.connectionCategoryThreshold.medium) return "medium";
 
-      return connectionCategory.fast;
+      return "fast";
     }
   }
 };

@@ -1,15 +1,12 @@
 import ConnectionAware from "./ConnectionAware.vue";
+import merge from "lodash.merge";
 
-// eslint-disable-next-line no-unused-vars
 function install(Vue, options) {
   if (install.installed) return;
   install.installed = true;
-  // const data = Object.assign({}, options);
-  // ConnectionAware.extend({
-  //   data: function() {
-  //     return data;
-  //   }
-  // });
+
+  merge(ConnectionAware.DEFAULT_OPTIONS, options);
+
   Vue.component(ConnectionAware.name, ConnectionAware);
 }
 
