@@ -19,8 +19,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-coverage/clover.xml
-coverage/coverage-final.json
-coverage/lcov.info
-coverage/lcov-report/ConnectionAware.vue.html
-coverage/lcov-report/index.html
+coverage/
