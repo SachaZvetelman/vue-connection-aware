@@ -96,7 +96,7 @@ _Note: if no speed prop (i.e. `slow`, `medium` or `fast`) is specified, the comp
 
 ## 🧪 Common examples
 
-Load and render a heavy image only when on a fast connection (`4g`):
+Load and render a heavy image only when on a fast connection:
 
 ```
 <connection-aware fast>
@@ -104,7 +104,7 @@ Load and render a heavy image only when on a fast connection (`4g`):
 </connection-aware>
 ```
 
-Show a div when on a medium or fast connection (`3g` or `4g`):
+Show a div when on a medium or fast connection:
 
 ```
 <connection-aware medium fast>
@@ -112,7 +112,7 @@ Show a div when on a medium or fast connection (`3g` or `4g`):
 </connection-aware>
 ```
 
-Warn the user their connection is slow (`2g` or `slow-2g`):
+Warn the user their connection is slow:
 
 ```
 <connection-aware slow>
@@ -120,7 +120,7 @@ Warn the user their connection is slow (`2g` or `slow-2g`):
 </connection-aware>
 ```
 
-Show a div when on a medium or fast connection (`3g` or `4g`) but don't destroy it if the connection slows down (to `2g` or `slow-2g`):
+Show a div when on a medium or fast connection but don't destroy it if the connection slows down:
 
 ```
 <connection-aware medium fast :reactive="false">
