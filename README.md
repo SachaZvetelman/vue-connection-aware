@@ -38,8 +38,8 @@ Vue.use(ConnectionAware);
 // Or specifying the different category thresholds.
 Vue.use(ConnectionAware, {
   connectionCategoryThreshold: {
-    slow: 1,
-    medium: 3
+    slow: 2,
+    medium: 6
   }
 });
 ```
@@ -61,12 +61,12 @@ export default {
 
 The default connection category thresholds, in Mbps, are:
 ```
-slow: 2,
-medium: 6,
+slow: 1,
+medium: 2,
 fast: Number.MAX_SAFE_INTEGER
 ```
 
-This means that any download speed up to 2 Mbps, will be considered as `slow`. Any connection above 2 Mbps up to 6 Mbps will be considered as `medium`. Anything above that will be `fast`. You can override these defaults by specifying the defaults when installing the component as a plugin.
+This means that any download speed up to 1 Mbps, will be considered as `slow`. Any connection above 1 Mbps up to 2 Mbps will be considered as `medium`. Anything above that will be `fast`. You can override these defaults by specifying the defaults when installing the component as a plugin.
 
 Each web application will have different requirements, and that's why you can configure the different thresholds.
 

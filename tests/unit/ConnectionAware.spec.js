@@ -1,8 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import ConnectionAware from "@/plugins/ConnectionAware/ConnectionAware.vue";
 
-const slowSpeed = 1;
-const mediumSpeed = 5;
+const slowSpeed = 0.9;
+const mediumSpeed = 1.9;
 const fastSpeed = 10;
 
 describe("ConnectionAware.vue", () => {
@@ -107,7 +107,7 @@ describe("ConnectionAware.vue", () => {
   });
 
   describe("getConnectionCategoryByDownloadSpeed", () => {
-    it.each([[slowSpeed], [slowSpeed + 1]])(
+    it.each([[slowSpeed], [slowSpeed + 0.1]])(
       "returns slow category when speed is within the slow category",
       speed => {
         // Arrange
@@ -121,7 +121,7 @@ describe("ConnectionAware.vue", () => {
       }
     );
 
-    it.each([[mediumSpeed], [mediumSpeed + 1]])(
+    it.each([[mediumSpeed], [mediumSpeed + 0.1]])(
       "returns medium category when speed is within the medium category",
       speed => {
         // Arrange

@@ -7,8 +7,8 @@
 <script>
 const DEFAULT_OPTIONS = {
   connectionCategoryThreshold: {
-    slow: 2,
-    medium: 6,
+    slow: 1,
+    medium: 2,
     fast: Number.MAX_SAFE_INTEGER
   }
 };
